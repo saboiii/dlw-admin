@@ -6,7 +6,7 @@ import React from 'react'
 function Navbar() {
     return (
         <Protect>
-            <div className='hidden md:flex flex-col shadow-xl shadow-black/90 w-14 items-center justify-between bg-[#151518] border border-[#1f1f21] rounded-r-[30px] py-4 z-50 h-[95vh]'>
+            <div className='hidden md:flex flex-col shadow-md shadow-[#281d1d] w-14 items-center justify-between bg-[#151518] border border-[#1f1f21] rounded-r-[30px] py-4 z-50 h-[95vh]'>
                 <Link href='/'>
                     <Image
                         src='/images/dlw-logo-white.png'

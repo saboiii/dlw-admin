@@ -9,16 +9,20 @@
 
 @layer base{
   body{
-    @apply bg-[#111111] text-[#eeeeee]  text-xs font-light
+    @apply text-[#111111] bg-[#eeeeee]  text-xs font-light
   }
 
   h1 {
-    @apply text-[#b2b2b2] text-[42px] md:text-[56px] font-medium tracking-tighter leading-[40px]
+    @apply text-[#111111] text-[42px] md:text-[56px] font-semibold tracking-tighter leading-[40px]
   }
 }
 
+.title{
+  @apply text-[#111111] text-[42px] md:text-[64px] font-bold tracking-[-5px] leading-[40px]
+}
+
 .containerFormat {
-  @apply rounded-xl bg-[#151518] shadow-xl shadow-black/90 border border-[#1f1f21]
+  @apply rounded-xl bg-[#151518] shadow-md shadow-[#281d1d] border border-[#1f1f21]
 }
 
 .soloStyle{
@@ -38,5 +42,9 @@
 }
 
 .buttonDesign{
-  @apply bg-[#151518] hover:bg-[#111114] shadow-sm shadow-black/90 border border-[#1f1f21] rounded-3xl py-2 px-4 duration-300 ease-in-out
+  @apply bg-[#151518] text-[#eeeeee] hover:bg-[#111114] shadow-md shadow-[#281d1d] border border-[#1f1f21] rounded-3xl py-2 px-4 duration-300 ease-in-out
+}
+
+.buttonDesign2{
+  @apply bg-[#eeeeee] font-normal text-[#111111] disabled:text-[#a1a1a1] disabled:bg-[#dfdfdf] hover:bg-[#dcd9d9] shadow-md shadow-[#281d1d] border border-[#1f1f21] rounded-xl py-2 px-4 duration-300 ease-in-out
 }

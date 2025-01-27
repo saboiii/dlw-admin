@@ -1,7 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { dark } from '@clerk/themes'
 
 export const metadata = {
   title: "DLW Admin",
@@ -10,11 +9,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider
-    appearance={{
-      baseTheme: dark,
-    }}
-    >
+    <ClerkProvider>
       <html lang="en">
         <body
           className='flex items-center antialiased flex-row'
