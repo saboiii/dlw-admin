@@ -2,20 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-VariableFont_wght.ttf');
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base{
+  body{
+    @apply bg-[#111111] text-[#eeeeee]  text-xs font-light
+  }
+
+  h1 {
+    @apply text-[#b2b2b2] text-[42px] md:text-[56px] font-medium tracking-tighter leading-[40px]
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.containerFormat {
+  @apply rounded-xl bg-[#151518] shadow-xl shadow-black/90 border border-[#1f1f21]
+}
+
+.soloStyle{
+  @apply uppercase text-[#7a68d4]
+}
+
+.teamStyle{
+  @apply uppercase text-[#d3b75a]
+}
+
+.soloStyleSoft{
+  @apply uppercase text-[#bcb6db]
+}
+
+.teamStyleSoft{
+  @apply uppercase text-[#dfd1a6]
+}
+
+.buttonDesign{
+  @apply bg-[#151518] hover:bg-[#111114] shadow-sm shadow-black/90 border border-[#1f1f21] rounded-3xl py-2 px-4 duration-300 ease-in-out
 }
