@@ -13,32 +13,36 @@
   }
 
   h1 {
-    @apply text-[#111111] text-[42px] md:text-[56px] font-semibold tracking-tighter leading-[40px]
+    @apply text-[#d8cfcf] font-light text-[36px] md:text-[56px] tracking-tighter leading-[40px]
+  }
+
+  h2 {
+    @apply text-[#d8cfcf] text-[24px] xl:text-[36px] font-semibold tracking-tighter leading-[40px]
   }
 }
 
 .title{
-  @apply text-[#111111] text-[42px] md:text-[64px] font-bold tracking-[-5px] leading-[40px]
+  @apply text-[#111111] text-[42px] md:text-[64px] font-bold tracking-[-3px] leading-[40px]
 }
 
 .containerFormat {
-  @apply rounded-xl bg-[#151518] shadow-md shadow-[#281d1d] border border-[#1f1f21]
+  @apply rounded-xl bg-[#151518] border border-[#1f1f21]
 }
 
 .soloStyle{
-  @apply uppercase text-[#7a68d4]
+  @apply uppercase text-[#d48a68]
 }
 
 .teamStyle{
-  @apply uppercase text-[#d3b75a]
+  @apply uppercase text-[#d35a84]
 }
 
 .soloStyleSoft{
-  @apply uppercase text-[#bcb6db]
+  @apply uppercase text-[#dbc7b6]
 }
 
 .teamStyleSoft{
-  @apply uppercase text-[#dfd1a6]
+  @apply uppercase text-[#e3b6c4]
 }
 
 .buttonDesign{
@@ -46,5 +50,21 @@
 }
 
 .buttonDesign2{
-  @apply bg-[#eeeeee] font-normal text-[#111111] disabled:text-[#a1a1a1] disabled:bg-[#dfdfdf] hover:bg-[#dcd9d9] shadow-md shadow-[#281d1d] border border-[#1f1f21] rounded-xl py-2 px-4 duration-300 ease-in-out
+  @apply bg-[#1f1f23] text-[#eeeeee] hover:bg-[#1d1d21] border border-[#28282c] disabled:text-[#676767] disabled:bg-[#262627] rounded-xl py-2 px-4 duration-300 ease-in-out
+}
+
+.deleteButton{
+  @apply bg-[#b94f4f] font-normal text-[#eeeeee] disabled:text-[#6e6262] disabled:bg-[#c5baba] hover:bg-[#b45050]  rounded-lg py-2 px-8 duration-300 ease-in-out
+}
+
+.deleteButton2{
+  @apply bg-[#974040] uppercase font-medium text-[#d9aeae] disabled:text-[#6e6262] disabled:bg-[#c5baba] hover:bg-[#994343]  rounded-lg py-1 px-3 duration-300 ease-in-out text-[9px]
+}
+
+.viewButton{
+  @apply bg-[#33323f] uppercase font-semibold text-[#c4c4c4] hover:bg-[#47455a] justify-center items-center rounded-lg py-1 px-4 duration-300 ease-in-out text-[9px]
+}
+
+.backButton{
+  @apply bg-[#33323f] font-normal text-[#ddd9d9] hover:bg-[#47455a] rounded-lg py-2 px-8 duration-300 ease-in-out
 }

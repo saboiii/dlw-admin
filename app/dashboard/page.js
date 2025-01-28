@@ -3,8 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { useUser } from "@clerk/nextjs";
 import { Protect } from '@clerk/nextjs'
 import { LuRefreshCcw } from "react-icons/lu";
+import Alert from '@/components/Alert';
+import Message from '@/components/Message';
+import { useRouter } from 'next/navigation';
 
 function Dashboard() {
+    const router = useRouter();
     const { isLoaded, user } = useUser();
     const [data, setData] = useState([]);
     const [stats, setStats] = useState({
@@ -16,10 +20,60 @@ function Dashboard() {
     });
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [participantToDelete, setParticipantToDelete] = useState(null);
+    const [participantNameToDelete, setNameParticipantToDelete] = useState('');
+    const [alert, setAlert] = useState(false);
+    const [successDeleteMessage, setSuccessDeleteMessage] = useState(false);
 
-    const fetchData = () => {
+    function openAlert() {
+        setAlert(true);
+    }
+
+    function closeAlert() {
+        setAlert(false);
+    }
+
+    function startDelete(id, name) {
+        setParticipantToDelete(id);
+        setNameParticipantToDelete(name);
+        openAlert();
+    }
+
+    function handleView(id) {
+        router.push(`/participant/${id}`);
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            setIsDeleting(true);
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const response = await fetch(`/api/deleteData`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete participant.');
+            }
+
+            setData((prevData) => prevData.filter((participant) => participant._id !== id));
+            setSuccessDeleteMessage(true);
+        } catch (error) {
+            console.error('Error deleting participant:', error);
+        } finally {
+            closeAlert();
+            setIsDeleting(false);
+        }
+    };
+
+    const fetchData = async () => {
         setIsRefreshing(true);
         setIsLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 300));
         fetch('/api/getData')
             .then((response) => response.json())
             .then((result) => {
@@ -63,6 +117,7 @@ function Dashboard() {
             })
             .catch((error) => console.error('Error fetching participants:', error))
             .finally(() => {
+                closeAlert();
                 setIsRefreshing(false);
                 setIsLoading(false);
             });
@@ -84,15 +139,31 @@ function Dashboard() {
 
     return (
         <Protect
-            fallback={<div className='flex flex-col w-full h-screen justify-center items-center'>Please sign in.</div>}
+            fallback={<div className='bg-black text-[#eeeeee] flex flex-col w-full h-screen justify-center items-center'>Please sign in.</div>}
         >
-            <div className='flex flex-col w-full md:h-screen justify-center items-center px-6 md:px-12 py-10'>
+            <div className='flex flex-col w-full md:h-screen justify-center items-center px-6 md:px-12 py-10 bg-black'>
+                {successDeleteMessage && <Message />}
+                <Alert
+                    title={`Delete ${participantNameToDelete}`}
+                    description={'Are you sure? This action is irreversible!'}
+                    continueFunction={() => handleDelete(participantToDelete)}
+                    flag={isDeleting}
+                    alert={alert}
+                    continueText={"Delete"}
+                    handleAlert={closeAlert}
+                />
                 <div className='flex flex-col w-full md:h-full'>
-                    <h1 className='ml-2 flex items-center h-[20vh]  md:h-[20%]'>
-                        Welcome, {user?.firstName}.
-                    </h1>
-                    <div className='grid md:h-[80%] grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-4 w-full'>
+                    <div className='ml-2 mb-8 h-[20vh] md:h-[25%] items-start flex flex-col justify-end'>
+                        <h1 className='flex mb-4 md:mb-6'>
+                            Welcome, {user?.firstName}.
+                        </h1>
+                        <div className='flex md:text-sm w-[60vw] text-[#eeeeee]'>
+                            Here, you can manage participant data and access key insights.
+                        </div>
+                    </div>
+                    <div className='grid md:h-[75%] grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-8 md:gap-4 w-full'>
                         <div className='flex flex-col w-full md:col-span-2 md:row-span-2 md:h-full h-[50vh] containerFormat p-4'>
+                            <div className='flex text-[#c1c2c7] text-lg ml-2 py-2 font-medium uppercase tracking-tight mb-4'>List of Participants</div>
                             <button
                                 onClick={fetchData}
                                 disabled={isRefreshing}
@@ -111,14 +182,44 @@ function Dashboard() {
                                     data.map((participant) => (
                                         <div key={participant._id}>
                                             {participant.solo ? (
-                                                <div className="flex justify-start gap-4 items-center px-6 w-full h-10">
-                                                    <div className="flex soloStyle">Solo</div>
-                                                    <div className="flex soloStyleSoft truncate">{participant.solo.name}</div>
+                                                <div className="flex items-center justify-between px-6 my-2 w-full h-10">
+                                                    <div className='flex gap-4'>
+                                                        <div className="flex soloStyle">Solo</div>
+                                                        <div className="block soloStyleSoft  w-[80px] md:w-[150px] lg:w-[200px] truncate">{participant.solo.name}</div>
+                                                    </div>
+                                                    <div className='flex gap-2'>
+                                                        <button
+                                                            onClick={() => handleView(participant._id)}
+                                                            className='flex viewButton'>
+                                                            View
+                                                        </button>
+                                                        <button
+                                                            onClick={() => startDelete(participant._id, participant.solo.name)}
+                                                            className='flex deleteButton2'>
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             ) : (
-                                                <div className="flex items-center justify-start gap-4 px-6 w-full h-10">
-                                                    <div className="flex teamStyle">Team</div>
-                                                    <div className="flex teamStyleSoft truncate">{participant.teamName} {participant.members && ` (${participant.members.length} members)`}</div>
+                                                <div className="flex items-center justify-between px-6 my-2 w-full h-10">
+                                                    <div className='flex gap-4'>
+                                                        <div className="flex teamStyle">Team</div>
+                                                        <div className="block teamStyleSoft w-[80px] md:w-[150px] lg:w-[200px] truncate">
+                                                            {participant.teamName} {participant.members && ` (${participant.members.length} pax)`}
+                                                        </div>
+                                                    </div>
+                                                    <div className='flex gap-2'>
+                                                        <button
+                                                            onClick={() => handleView(participant._id)}
+                                                            className='flex viewButton'>
+                                                            View
+                                                        </button>
+                                                        <button
+                                                            onClick={() => startDelete(participant._id, participant.teamName)}
+                                                            className='flex deleteButton2'>
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             )}
                                         </div>
@@ -145,7 +246,6 @@ function Dashboard() {
                                 )}
                                 <div className="flex py-4 px-4 w-full flex-col">
                                     {isLoading ? (
-                                        // Shimmer loading placeholder
                                         <div className="animate-pulse space-y-4">
                                             {[...Array(3)].map((_, index) => (
                                                 <div
@@ -155,7 +255,7 @@ function Dashboard() {
                                             ))}
                                         </div>
                                     ) : (
-                                        // Actual content when data is loaded
+
                                         Object.entries(stats.studentsByUniversity).map(([uni, count]) => {
                                             const universityMap = {
                                                 "Nanyang Technological University": "NTU",
@@ -183,7 +283,6 @@ function Dashboard() {
 
                                 <div className="flex py-4 px-4 w-full flex-col">
                                     {isLoading ? (
-                                        // Shimmer loading placeholder
                                         <div className="animate-pulse space-y-4">
                                             {[...Array(3)].map((_, index) => (
                                                 <div
@@ -193,7 +292,6 @@ function Dashboard() {
                                             ))}
                                         </div>
                                     ) : (
-                                        // Actual content when data is loaded
                                         Object.entries(stats.genderCounts).map(([gender, count]) => {
                                             const genderMap = {
                                                 "he": "Male",
