@@ -185,7 +185,7 @@ function Dashboard() {
                                                 <div className="flex items-center justify-between px-6 my-2 w-full h-10">
                                                     <div className='flex gap-4'>
                                                         <div className="flex soloStyle">Solo</div>
-                                                        <div className="block soloStyleSoft  w-[80px] md:w-[150px] lg:w-[200px] truncate">{participant.solo.name}</div>
+                                                        <div className="block soloStyleSoft  w-[60px] md:w-[150px] lg:w-[200px] truncate">{participant.solo.name}</div>
                                                     </div>
                                                     <div className='flex gap-2'>
                                                         <button
@@ -204,7 +204,7 @@ function Dashboard() {
                                                 <div className="flex items-center justify-between px-6 my-2 w-full h-10">
                                                     <div className='flex gap-4'>
                                                         <div className="flex teamStyle">Team</div>
-                                                        <div className="block teamStyleSoft w-[80px] md:w-[150px] lg:w-[200px] truncate">
+                                                        <div className="block teamStyleSoft w-[60px] md:w-[150px] lg:w-[200px] truncate">
                                                             {participant.teamName} {participant.members && ` (${participant.members.length} pax)`}
                                                         </div>
                                                     </div>
