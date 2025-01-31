@@ -180,7 +180,7 @@ function Dashboard() {
                     Night_Stay: member.night ? "Yes" : "No",
                     Size: member.size,
                     NTU_Email: member.ntuEmail || "",
-                    Matric_No: member.matricNo || "", 
+                    Matric_No: member.matricNo || "",
                 }));
             }
             return [];
@@ -190,7 +190,7 @@ function Dashboard() {
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
 
-        const rawFileName = "dlw_participants"; 
+        const rawFileName = "dlw_participants";
         const formattedFileName = rawFileName.toLowerCase().replace(/\s+/g, "-");
 
         XLSX.writeFile(workbook, `${formattedFileName}.xlsx`);
@@ -235,7 +235,10 @@ function Dashboard() {
                                 />
                                 Refresh
                             </button>
-                            <button onClick={downloadData} className='flex items-center mb-4 uppercase buttonDesign2'>
+                            <button
+                                onClick={downloadData}
+                                disabled={isRefreshing}
+                                className={`flex items-center mb-4 uppercase buttonDesign2 ${isRefreshing ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                 <FiDownload className='inline mr-2' />
                                 Download
                             </button>
