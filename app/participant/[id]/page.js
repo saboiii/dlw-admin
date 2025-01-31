@@ -1,14 +1,77 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Protect, useUser } from '@clerk/nextjs';
 import ParticipantInfo from '@/components/ParticipantInfo';
+import { IoChevronBack } from "react-icons/io5";
+import { FiDownload } from "react-icons/fi";
+import * as XLSX from 'xlsx';
 
 function ParticipantPage() {
     const { isLoaded, user } = useUser();
+    const router = useRouter();
     const { id } = useParams();
     const [participant, setParticipant] = useState(null);
 
+    function handleGoBack() {
+        router.push('/dashboard');
+    }
+
+    const genderMap = {
+        "he": "Male",
+        "she": "Female",
+        "they": "Prefer not to say",
+    };
+
+    const universityMap = {
+        "Nanyang Technological University": "NTU",
+        "National University of Singapore": "NUS",
+        "Singapore University of Design & Technology": "SUTD",
+        "Singapore University of Social Sciences": "SUSS",
+        "Singapore Management University": "SMU",
+        "Singapore Institute of Technology": "SIT",
+    };
+
+    const downloadExcel = () => {
+        if (!participant) return;
+
+        let data = [];
+
+        if (participant.solo) {
+            data.push({
+                Name: participant.solo.name,
+                Email: participant.solo.email,
+                Telegram: participant.solo.tele,
+                University: universityMap[participant.solo.uni],
+                Gender: genderMap[participant.solo.gender],
+                Night_Stay: participant.solo.night ? "Yes" : "No",
+                Size: participant.solo.size,
+                NTU_Email: participant.solo.ntuEmail || "",
+                Matric_No: participant.solo.matricNo || "",
+            });
+        } else if (participant.members) {
+            data = participant.members.map(member => ({
+                Name: member.name,
+                Email: member.email,
+                Telegram: member.tele,
+                University: universityMap[member.uni],
+                Gender: genderMap[member.gender],
+                Night_Stay: member.night ? "Yes" : "No",
+                Size: member.size,
+                NTU_Email: member.ntuEmail || "",
+                Matric_No: member.matricNo || "",
+            }));
+        }
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
+
+        const rawFileName = participant.teamName || participant.solo.name;
+        const formattedFileName = rawFileName.toLowerCase().replace(/\s+/g, "-");
+
+        XLSX.writeFile(workbook, `${formattedFileName}.xlsx`);
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -17,6 +80,7 @@ function ParticipantPage() {
                 if (response.ok) {
                     const data = await response.json();
                     setParticipant(data.participant);
+                    console.log(data.participant);
                 } else {
                     console.error('Error fetching participant:', response.statusText);
                 }
@@ -33,7 +97,7 @@ function ParticipantPage() {
     if (!participant) {
         return (
             <div className="flex flex-col w-full h-screen justify-center items-center bg-black text-[#eeeeee]">
-                <p>Loading...</p> {/* Show loading until data is available */}
+                <p>Loading...</p>
             </div>
         );
     }
@@ -41,15 +105,43 @@ function ParticipantPage() {
 
     return (
         <Protect
-            fallback={<div className='flex flex-col w-full h-screen justify-center items-center bg-black text-[#eeeeee]'>Please sign in.</div>}
+            fallback={<div className='flex flex-col w-full justify-center items-center bg-black text-[#eeeeee]'>Please sign in.</div>}
         >
-            <div className='flex flex-col items-center justify-center w-screen h-screen bg-black text-[#eeeeee]'>
+            <div className='flex flex-col items-center justify-center w-screen bg-black text-[#eeeeee]'>
+
                 {participant.solo ? (
-                    <ParticipantInfo participant={participant}/>
+                    <div className='flex flex-col h-screen w-screen items-center justify-center'>
+                        <div className='flex w-full items-end justify-between px-12 md:px-24 mb-8'>
+                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] pl-2 pr-4 py-2'>
+                                <IoChevronBack className='inline mr-2' />
+                                Back
+                            </button>
+                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] px-4 py-2'>
+                                <FiDownload className='inline ' />
+                            </button>
+                        </div>
+                        <ParticipantInfo participant={participant.solo} />
+                    </div>
                 ) : (
-                    <div className='flex flex-col gap-8 items-center'>
-                        <h1>{participant.teamName}</h1>
-                        <p>Webpage still under development.</p>
+                    <div className='flex flex-col pt-32 items-center'>
+                        <h1 className='font-medium mb-8'>{participant.teamName}</h1>
+                        <div className='w-full flex justify-between mb-6 px-12 md:px-24'>
+                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] pl-2 pr-4 py-2'>
+                                <IoChevronBack className='inline mr-2' />
+                                Back
+                            </button>
+                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] px-4 py-2'>
+                                Download
+                                <FiDownload className='inline ml-2' />
+                            </button>
+                        </div>
+                        <div className='flex w-full border-[#2b2b2d] border-t' />
+                        {participant.members.map((member, index) => (
+                            <div key={index}>
+                                <ParticipantInfo participant={member} />
+                                <div className='flex w-full border-[#2b2b2d] border-t my-10' />
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

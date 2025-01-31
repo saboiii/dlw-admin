@@ -1,5 +1,6 @@
 import React from 'react'
-import { IoMdCopy } from "react-icons/io";
+
+import CopyField from './CopyField';
 
 function ParticipantInfo({ participant }) {
 
@@ -12,11 +13,7 @@ function ParticipantInfo({ participant }) {
         "Singapore Institute of Technology": "SIT",
     };
 
-    const handleCopy = (text) => {
-        navigator.clipboard.writeText(text).catch(err => {
-            console.error("Failed to copy: ", err);
-        });
-    };
+
 
     const genderMap = {
         "he": "Male",
@@ -25,69 +22,29 @@ function ParticipantInfo({ participant }) {
     };
 
     return (
-        <div className='flex flex-col justify-center w-full gap-4 h-full px-12 py-32 md:p-24'>
-            <h1 className='flex mb-4'>{participant.solo.name}</h1>
+        <div className='flex flex-col justify-center w-full gap-4  px-12 md:p-24 '>
+            <h2 className='flex mb-4 font-normal'>{participant.name}</h2>
             <div className='flex flex-wrap gap-4 mb-4'>
                 <div className='bg-gradient-to-r from-[#874462] to-[#965a75] infoTag'>Solo</div>
-                <div className='bg-gradient-to-r from-[#448785] to-[#3f6c6b] infoTag'>{universityMap[participant.solo.uni]}</div>
-                <div className='bg-gradient-to-r from-[#a9654c] to-[#c86f52] infoTag'>Size {participant.solo.size}</div>
-                <div className='bg-gradient-to-r from-[#5f4487] to-[#7e63a7] infoTag '>{genderMap[participant.solo.gender]}</div>
-                <div className={`bg-gradient-to-r ${participant.solo.night ? 'from-[#423b77] to-[#2d2669]':'from-[#7f2d2d] to-[#c65247]'} infoTag`}>{participant.solo.night ? 'Staying Overnight':'Not Staying Overnight'}</div>
+                <div className='bg-gradient-to-r from-[#448785] to-[#3f6c6b] infoTag'>{universityMap[participant.uni]}</div>
+                <div className='bg-gradient-to-r from-[#a9654c] to-[#c86f52] infoTag'>Size {participant.size}</div>
+                <div className='bg-gradient-to-r from-[#5f4487] to-[#7e63a7] infoTag '>{genderMap[participant.gender]}</div>
+                <div className={`bg-gradient-to-r ${participant.night ? 'from-[#423b77] to-[#2d2669]' : 'from-[#7f2d2d] to-[#c65247]'} infoTag`}>{participant.night ? 'Staying Overnight' : 'Not Staying Overnight'}</div>
             </div>
 
-            <div className='flex flex-col gap-2 w-full'>
-                <div className='flex ml-1 uppercase font-medium text-gray-600'>Personal Email</div>
-                <div className='flex w-full md:w-2/3 containerFormat text-slate-200  transition duration-200 ease-in-out justify-between'>
-                    <div className='flex px-4 py-2'>{participant.solo.email}</div>
-                    <button onClick={() => handleCopy(participant.solo.email)} className='flex items-center justify-center border-l text-[#2b2b2d] hover:text-slate-200 transition duration-500 ease-in-out border-[#1f1f21] cursor-pointer w-10 h-full'>
-                        <IoMdCopy size={16} className='flex' />
-                    </button>
-                </div>
-            </div>
+            <CopyField content={participant.email} title={'Personal Email'} />
 
-            {participant.solo.ntuEmail && (
-                <div className='flex flex-col gap-2 w-full'>
-                    <div className='flex ml-1 uppercase font-medium text-gray-600'>NTU Email</div>
-                    <div className='flex w-full md:w-2/3 containerFormat text-slate-200  transition duration-200 ease-in-out justify-between'>
-                        <div className='flex px-4 py-2'>{participant.solo.ntuEmail}</div>
-                        <button onClick={() => handleCopy(participant.solo.ntuEmail)} className='flex items-center justify-center border-l text-[#2b2b2d] hover:text-slate-200 transition duration-500 ease-in-out border-[#1f1f21] cursor-pointer w-10 h-full'>
-                            <IoMdCopy size={16} className='flex' />
-                        </button>
-                    </div>
-                </div>
+            {participant.ntuEmail && (
+                <CopyField content={participant.ntuEmail} title={'NTU Email'} />
             )}
 
-            {participant.solo.matricNo && (
-                <div className='flex flex-col gap-2 w-full'>
-                    <div className='flex ml-1 uppercase font-medium text-gray-600'>Matriculation No.</div>
-                    <div className='flex w-full md:w-2/3 containerFormat text-slate-200  transition duration-200 ease-in-out justify-between'>
-                        <div className='flex px-4 py-2'>{participant.solo.matricNo}</div>
-                        <button onClick={() => handleCopy(participant.solo.matricNo)} className='flex items-center justify-center border-l text-[#2b2b2d] hover:text-slate-200 transition duration-500 ease-in-out border-[#1f1f21] cursor-pointer w-10 h-full'>
-                            <IoMdCopy size={16} className='flex' />
-                        </button>
-                    </div>
-                </div>
+            {participant.matricNo && (
+                <CopyField content={participant.matricNo} title={'Matriculation No.'} />
             )}
 
-            <div className='flex flex-col gap-2 w-full'>
-                <div className='flex ml-1 uppercase font-medium text-gray-600'>Telegram</div>
-                <div className='flex w-full md:w-2/3 containerFormat text-slate-200 justify-between'>
-                    <div className='flex px-4 py-2'>{participant.solo.tele}</div>
-                    <button onClick={() => handleCopy(participant.solo.tele)} className='flex items-center justify-center border-l text-[#2b2b2d] hover:text-slate-200 transition duration-500 ease-in-out border-[#1f1f21] cursor-pointer w-10 h-full'>
-                        <IoMdCopy size={16} className='flex' />
-                    </button>
-                </div>
-            </div>
+            <CopyField content={participant.tele} title={'Telegram Handle'} />
 
-            <div className='flex flex-col gap-2 w-full'>
-                <div className='flex ml-1 uppercase font-medium text-gray-600'>Course</div>
-                <div className='flex w-full md:w-2/3 containerFormat text-slate-200 justify-between'>
-                    <div className='flex px-4 py-2'>{participant.solo.course}</div>
-                    <button onClick={() => handleCopy(participant.solo.course)} className='flex items-center justify-center border-l text-[#2b2b2d] hover:text-slate-200 transition duration-500 ease-in-out border-[#1f1f21] cursor-pointer w-10 h-full'>
-                        <IoMdCopy size={16} className='flex' />
-                    </button>
-                </div>
-            </div>
+            <CopyField content={participant.course} title={'Course'}/>
         </div>
     )
 }

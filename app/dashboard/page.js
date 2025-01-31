@@ -6,6 +6,8 @@ import { LuRefreshCcw } from "react-icons/lu";
 import Alert from '@/components/Alert';
 import Message from '@/components/Message';
 import { useRouter } from 'next/navigation';
+import { FiDownload } from "react-icons/fi";
+import * as XLSX from 'xlsx';
 
 function Dashboard() {
     const router = useRouter();
@@ -25,6 +27,21 @@ function Dashboard() {
     const [participantNameToDelete, setNameParticipantToDelete] = useState('');
     const [alert, setAlert] = useState(false);
     const [successDeleteMessage, setSuccessDeleteMessage] = useState(false);
+
+    const genderMap = {
+        "he": "Male",
+        "she": "Female",
+        "they": "Prefer not to say",
+    };
+
+    const universityMap = {
+        "Nanyang Technological University": "NTU",
+        "National University of Singapore": "NUS",
+        "Singapore University of Design & Technology": "SUTD",
+        "Singapore University of Social Sciences": "SUSS",
+        "Singapore Management University": "SMU",
+        "Singapore Institute of Technology": "SIT",
+    };
 
     function openAlert() {
         setAlert(true);
@@ -137,6 +154,49 @@ function Dashboard() {
         </div>
     );
 
+    const downloadData = () => {
+        if (!data || data.length === 0) return;
+
+        const allParticipants = data.flatMap(participant => {
+            if (participant.solo) {
+                return {
+                    Name: participant.solo.name,
+                    Email: participant.solo.email,
+                    Telegram: participant.solo.tele,
+                    University: universityMap[participant.solo.uni],
+                    Gender: genderMap[participant.solo.gender],
+                    Night_Stay: participant.solo.night ? "Yes" : "No",
+                    Size: participant.solo.size,
+                    NTU_Email: participant.solo.ntuEmail || "",
+                    Matric_No: participant.solo.matricNo || "",
+                };
+            } else if (participant.members) {
+                return participant.members.map(member => ({
+                    Name: member.name,
+                    Email: member.email,
+                    Telegram: member.tele,
+                    University: universityMap[member.uni],
+                    Gender: genderMap[member.gender],
+                    Night_Stay: member.night ? "Yes" : "No",
+                    Size: member.size,
+                    NTU_Email: member.ntuEmail || "",
+                    Matric_No: member.matricNo || "", 
+                }));
+            }
+            return [];
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(allParticipants);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
+
+        const rawFileName = "dlw_participants"; 
+        const formattedFileName = rawFileName.toLowerCase().replace(/\s+/g, "-");
+
+        XLSX.writeFile(workbook, `${formattedFileName}.xlsx`);
+    };
+
+
     return (
         <Protect
             fallback={<div className='bg-black text-[#eeeeee] flex flex-col w-full h-screen justify-center items-center'>Please sign in.</div>}
@@ -174,6 +234,10 @@ function Dashboard() {
                                     className={`mr-2 ${isRefreshing ? 'animate-spin' : ''}`}
                                 />
                                 Refresh
+                            </button>
+                            <button onClick={downloadData} className='flex items-center mb-4 uppercase buttonDesign2'>
+                                <FiDownload className='inline mr-2' />
+                                Download
                             </button>
                             <div className='flex flex-col w-full divide-y divide-[#1f1f21] overflow-scroll'>
                                 {isLoading ? (
@@ -257,23 +321,12 @@ function Dashboard() {
                                     ) : (
 
                                         Object.entries(stats.studentsByUniversity).map(([uni, count]) => {
-                                            const universityMap = {
-                                                "Nanyang Technological University": "NTU",
-                                                "National University of Singapore": "NUS",
-                                                "Singapore University of Design & Technology": "SUTD",
-                                                "Singapore University of Social Sciences": "SUSS",
-                                                "Singapore Management University": "SMU",
-                                                "Singapore Institute of Technology": "SIT",
-                                            };
-
-                                            const shortForm = universityMap[uni];
-
                                             return (
                                                 <div
                                                     key={uni}
                                                     className="flex rounded-xl bg-[#0e0e10] px-4 py-2 mb-2"
                                                 >
-                                                    {shortForm}: {count}
+                                                    {universityMap[uni]}: {count}
                                                 </div>
                                             );
                                         })
@@ -293,20 +346,12 @@ function Dashboard() {
                                         </div>
                                     ) : (
                                         Object.entries(stats.genderCounts).map(([gender, count]) => {
-                                            const genderMap = {
-                                                "he": "Male",
-                                                "she": "Female",
-                                                "they": "Prefer not to say",
-                                            };
-
-                                            const genderLabel = genderMap[gender];
-
                                             return (
                                                 <div
                                                     key={gender}
                                                     className="flex rounded-xl bg-[#0e0e10] px-4 py-2 mb-2"
                                                 >
-                                                    {genderLabel}: {count}
+                                                    {genderMap[gender]}: {count}
                                                 </div>
                                             );
                                         })
