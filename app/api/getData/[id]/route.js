@@ -10,7 +10,6 @@ export async function GET(req, { params }) {
     try {
 
         const participant = await Participant.findById(id);
-        console.log(participant);
 
         if (!participant) {
             return new Response(JSON.stringify({ message: 'Participant not found' }), {

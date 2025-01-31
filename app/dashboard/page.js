@@ -193,11 +193,11 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        <button
+                                                        {/* <button
                                                             onClick={() => startDelete(participant._id, participant.solo.name)}
                                                             className='flex deleteButton2'>
                                                             Delete
-                                                        </button>
+                                                        </button> */}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -214,11 +214,11 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        <button
+                                                        {/* <button
                                                             onClick={() => startDelete(participant._id, participant.teamName)}
                                                             className='flex deleteButton2'>
                                                             Delete
-                                                        </button>
+                                                        </button> */}
                                                     </div>
                                                 </div>
                                             )}

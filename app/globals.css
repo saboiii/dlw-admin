@@ -68,3 +68,7 @@
 .backButton{
   @apply bg-[#33323f] font-normal text-[#ddd9d9] hover:bg-[#47455a] rounded-lg py-2 px-8 duration-300 ease-in-out
 }
+
+.infoTag{
+  @apply rounded-md px-4 py-2 tracking-widest uppercase font-medium text-[9px]
+}

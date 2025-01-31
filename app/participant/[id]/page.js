@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation';
 import { Protect, useUser } from '@clerk/nextjs';
+import ParticipantInfo from '@/components/ParticipantInfo';
 
 function ParticipantPage() {
     const { isLoaded, user } = useUser();
     const { id } = useParams();
     const [participant, setParticipant] = useState(null);
+
 
     useEffect(() => {
         async function fetchData() {
@@ -15,7 +17,6 @@ function ParticipantPage() {
                 if (response.ok) {
                     const data = await response.json();
                     setParticipant(data.participant);
-                    console.log(data);
                 } else {
                     console.error('Error fetching participant:', response.statusText);
                 }
@@ -37,16 +38,14 @@ function ParticipantPage() {
         );
     }
 
+
     return (
         <Protect
             fallback={<div className='flex flex-col w-full h-screen justify-center items-center bg-black text-[#eeeeee]'>Please sign in.</div>}
         >
             <div className='flex flex-col items-center justify-center w-screen h-screen bg-black text-[#eeeeee]'>
                 {participant.solo ? (
-                    <div className='flex flex-col gap-8 items-center'>
-                        <h1>{participant.solo.name}</h1>
-                        <p>Webpage still under development.</p>
-                    </div>
+                    <ParticipantInfo participant={participant}/>
                 ) : (
                     <div className='flex flex-col gap-8 items-center'>
                         <h1>{participant.teamName}</h1>
