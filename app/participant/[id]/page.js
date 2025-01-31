@@ -110,22 +110,22 @@ function ParticipantPage() {
             <div className='flex flex-col items-center justify-center w-screen bg-black text-[#eeeeee]'>
 
                 {participant.solo ? (
-                    <div className='flex flex-col h-screen w-screen items-center justify-center'>
-                        <div className='flex w-full items-end justify-between px-12 md:px-24 mb-8'>
-                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] pl-2 pr-4 py-2'>
+                    <div className='flex flex-col h-screen w-screen items-center md:items-start justify-center'>
+                        <div className='flex w-full items-end justify-between md:justify-start gap-4 px-12 md:px-24 mb-8'>
+                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] h-8 pl-2 pr-4 py-2'>
                                 <IoChevronBack className='inline mr-2' />
                                 Back
                             </button>
-                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] px-4 py-2'>
+                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase h-8 text-[#535357] px-4 py-2'>
                                 <FiDownload className='inline ' />
                             </button>
                         </div>
                         <ParticipantInfo participant={participant.solo} />
                     </div>
                 ) : (
-                    <div className='flex flex-col pt-32 items-center'>
-                        <h1 className='font-medium mb-8'>{participant.teamName}</h1>
-                        <div className='w-full flex justify-between mb-6 px-12 md:px-24'>
+                    <div className='flex flex-col pt-32 w-screen items-center md:items-start md:h-screen md:overflow-scroll'>
+                        <h1 className='font-medium mb-8 md:px-12'>{participant.teamName}</h1>
+                        <div className='w-full flex justify-between md:justify-start gap-4 mb-6 px-12 '>
                             <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] pl-2 pr-4 py-2'>
                                 <IoChevronBack className='inline mr-2' />
                                 Back
@@ -135,9 +135,9 @@ function ParticipantPage() {
                                 <FiDownload className='inline ml-2' />
                             </button>
                         </div>
-                        <div className='flex w-full border-[#2b2b2d] border-t' />
+                        <div className='flex w-full border-[#2b2b2d] border-t mb-8' />
                         {participant.members.map((member, index) => (
-                            <div key={index}>
+                            <div key={index} className='flex w-full flex-col'>
                                 <ParticipantInfo participant={member} />
                                 <div className='flex w-full border-[#2b2b2d] border-t my-10' />
                             </div>

@@ -22,7 +22,7 @@ function ParticipantInfo({ participant }) {
     };
 
     return (
-        <div className='flex flex-col justify-center w-full gap-4  px-12 md:p-24 '>
+        <div className='flex flex-col justify-center w-full gap-4 px-12 '>
             <h2 className='flex mb-4 font-normal'>{participant.name}</h2>
             <div className='flex flex-wrap gap-4 mb-4'>
                 <div className='bg-gradient-to-r from-[#874462] to-[#965a75] infoTag'>Solo</div>
