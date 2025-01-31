@@ -164,11 +164,13 @@ function Dashboard() {
                     Email: participant.solo.email,
                     Telegram: participant.solo.tele,
                     University: universityMap[participant.solo.uni],
+                    Course: participant.solo.course,
                     Gender: genderMap[participant.solo.gender],
                     Night_Stay: participant.solo.night ? "Yes" : "No",
                     Size: participant.solo.size,
                     NTU_Email: participant.solo.ntuEmail || "",
                     Matric_No: participant.solo.matricNo || "",
+                    Dietary_Preferences: participant.solo.diet || "",
                 };
             } else if (participant.members) {
                 return participant.members.map(member => ({
@@ -176,11 +178,13 @@ function Dashboard() {
                     Email: member.email,
                     Telegram: member.tele,
                     University: universityMap[member.uni],
+                    Course: member.course,
                     Gender: genderMap[member.gender],
                     Night_Stay: member.night ? "Yes" : "No",
                     Size: member.size,
                     NTU_Email: member.ntuEmail || "",
                     Matric_No: member.matricNo || "",
+                    Dietary_Preferences: member.diet || "",
                 }));
             }
             return [];
@@ -238,7 +242,8 @@ function Dashboard() {
                             <button
                                 onClick={downloadData}
                                 disabled={isRefreshing}
-                                className={`flex items-center mb-4 uppercase buttonDesign2 ${isRefreshing ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                className={`flex items-center mb-4 uppercase buttonDesign2 ${isRefreshing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            >
                                 <FiDownload className='inline mr-2' />
                                 Download
                             </button>

@@ -43,11 +43,13 @@ function ParticipantPage() {
                 Email: participant.solo.email,
                 Telegram: participant.solo.tele,
                 University: universityMap[participant.solo.uni],
+                Course: participant.solo.course,
                 Gender: genderMap[participant.solo.gender],
                 Night_Stay: participant.solo.night ? "Yes" : "No",
                 Size: participant.solo.size,
                 NTU_Email: participant.solo.ntuEmail || "",
                 Matric_No: participant.solo.matricNo || "",
+                Dietary_Preferences: participant.solo.diet || "",
             });
         } else if (participant.members) {
             data = participant.members.map(member => ({
@@ -55,11 +57,13 @@ function ParticipantPage() {
                 Email: member.email,
                 Telegram: member.tele,
                 University: universityMap[member.uni],
+                Course: member.course,
                 Gender: genderMap[member.gender],
                 Night_Stay: member.night ? "Yes" : "No",
                 Size: member.size,
                 NTU_Email: member.ntuEmail || "",
                 Matric_No: member.matricNo || "",
+                Dietary_Preferences: member.diet || "",
             }));
         }
 
