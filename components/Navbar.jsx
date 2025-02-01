@@ -11,7 +11,7 @@ function Navbar() {
 
 
     useEffect(() => {
-        if (!user?.id) return;
+        if (!user?.id) return; 
 
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -90,10 +90,10 @@ function Navbar() {
 
                                         <div className={`z-[${index + 1}] shadow-lg shadow-black overflow-hidden rounded-full h-[27px] w-[27px] flex`} style={{ transform: `translateY(${-10 * (index + 1)}px)` }}>
                                             <img
-                                                src={onlineUser.imageUrl && onlineUser.imageUrl.trim() !== '' ? onlineUser.imageUrl : '/alternative.png'}
+                                                src={onlineUser.imageUrl}
                                                 height={40}
                                                 width={40}
-                                                alt={onlineUser.firstName && onlineUser.firstName.trim() !== '' ? onlineUser.firstName : 'User'}
+                                                alt={onlineUser.firstName || 'User'}
                                                 className='object-cover w-full h-full'
                                             />
                                         </div>
@@ -104,7 +104,6 @@ function Navbar() {
 
                                     </div>
                                 ))}
-
 
                         <div className='flex '>
                             <UserButton />
@@ -129,16 +128,20 @@ function Navbar() {
                             onlineUsers
                                 .filter((onlineUser) => user && onlineUser.userId !== user.id)
                                 .map((onlineUser, index) => (
-                                    <div key={index} className='relative mb-2 flex items-center group'>
+                                    <div key={index} className='relative flex group mr-3'>
+                                        <div
+                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[27px] w-[27px] flex shadow-black shadow-lg`}
+                                            style={{ transform: `translateX(${16 * (-index + 1)}px)` }}
+                                        >
 
-                                        <div className={`z-[${index + 1}] shadow-lg shadow-black overflow-hidden rounded-full h-[27px] w-[27px] flex`} style={{ transform: `translateY(${-10 * (index + 1)}px)` }}>
                                             <img
-                                                src={onlineUser.imageUrl && onlineUser.imageUrl.trim() !== '' ? onlineUser.imageUrl : '/alternative.png'}
+                                                src={onlineUser.imageUrl}
                                                 height={40}
                                                 width={40}
-                                                alt={onlineUser.firstName && onlineUser.firstName.trim() !== '' ? onlineUser.firstName : 'User'}
+                                                alt={onlineUser.firstName || 'User'}
                                                 className='object-cover w-full h-full'
                                             />
+
                                         </div>
                                         <div className='absolute flex-row items-center pointer-events-none flex opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out top-0 left-0 cursor-pointer -translate-x-[30px] translate-y-10 px-5 py-2 rounded-xl bg-[#151518] border border-[#1f1f21]'>
                                             <div className='flex bg-green-400 w-1 h-1 rounded-full mr-3' />
