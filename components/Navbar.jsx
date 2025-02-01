@@ -131,7 +131,7 @@ function Navbar() {
                                     <div key={index} className='relative flex group items-center mr-6'>
                                         <div
                                             className={`z-[${index + 1}] overflow-hidden rounded-full h-[28px] w-[28px] flex`}
-                                            style={{ transform: `translateX(${16 * (-index + 1)}px)` }}
+                                            style={{ transform: `translateX(${28 * (-index + 1)}px)` }}
                                         >
 
                                             <img
