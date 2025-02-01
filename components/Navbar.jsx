@@ -128,9 +128,9 @@ function Navbar() {
                             onlineUsers
                                 .filter((onlineUser) => user && onlineUser.userId !== user.id)
                                 .map((onlineUser, index) => (
-                                    <div key={index} className='relative flex justify-center group items-center mr-6'>
+                                    <div key={index} className='relative flex group items-center mr-6'>
                                         <div
-                                            className={`z-[${index + 1}] overflow-hidden rounded-full mb-[1px] h-[29px] w-[29px] flex`}
+                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[29px] w-[29px] flex`}
                                             style={{ transform: `translateX(${16 * (-index + 1)}px)` }}
                                         >
 
@@ -150,7 +150,7 @@ function Navbar() {
                                     </div>
                                 ))}
                     </div>
-                    <div className="pl-4 ml-3">
+                    <div className="flex pl-4 ml-3">
                         <UserButton />
                     </div>
                 </div>
