@@ -122,15 +122,15 @@ function Navbar() {
                         className='object-fit w-10 h-10'
                     />
                 </Link>
-                <div className='flex items-center divide-[#2d2d31] divide-x'>
+                <div className='flex items-center justify-center divide-[#2d2d31] divide-x'>
                     <div className='flex items-center'>
                         {onlineUsers &&
                             onlineUsers
                                 .filter((onlineUser) => user && onlineUser.userId !== user.id)
                                 .map((onlineUser, index) => (
-                                    <div key={index} className='relative flex group mr-3'>
+                                    <div key={index} className='relative flex justify-center group items-center mr-6'>
                                         <div
-                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[27px] w-[27px] flex shadow-black shadow-lg`}
+                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[27px] w-[27px] flex`}
                                             style={{ transform: `translateX(${16 * (-index + 1)}px)` }}
                                         >
 
