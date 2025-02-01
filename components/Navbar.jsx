@@ -143,7 +143,7 @@ function Navbar() {
                                             />
 
                                         </div>
-                                        <div className='absolute flex-row items-center pointer-events-none flex opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out top-0 left-0 cursor-pointer -translate-x-[30px] translate-y-10 px-5 py-2 rounded-xl bg-[#151518] border border-[#1f1f21]'>
+                                        <div className='absolute flex-row items-center pointer-events-none flex opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out top-0 left-0 cursor-pointer -translate-x-[18px] translate-y-10 px-5 py-2 rounded-xl bg-[#151518] border border-[#1f1f21]'>
                                             <div className='flex bg-green-400 w-1 h-1 rounded-full mr-3' />
                                             Online
                                         </div>
