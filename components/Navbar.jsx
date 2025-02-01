@@ -130,7 +130,7 @@ function Navbar() {
                                 .map((onlineUser, index) => (
                                     <div key={index} className='relative flex group items-center mr-6'>
                                         <div
-                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[29px] w-[29px] flex`}
+                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[28px] w-[28px] flex`}
                                             style={{ transform: `translateX(${16 * (-index + 1)}px)` }}
                                         >
 
