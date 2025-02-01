@@ -100,7 +100,7 @@ function ParticipantPage() {
 
     if (!participant) {
         return (
-            <div className="flex flex-col w-full h-screen justify-center items-center bg-black text-[#eeeeee]">
+            <div className="flex flex-col w-full h-screen justify-center items-center text-[#eeeeee]">
                 <p>Loading...</p>
             </div>
         );
@@ -109,9 +109,9 @@ function ParticipantPage() {
 
     return (
         <Protect
-            fallback={<div className='flex flex-col w-full justify-center items-center bg-black text-[#eeeeee]'>Please sign in.</div>}
+            fallback={<div className='flex flex-col w-full justify-center items-center text-[#eeeeee]'>Please sign in.</div>}
         >
-            <div className='flex flex-col items-center justify-center w-screen bg-black text-[#eeeeee]'>
+            <div className='flex flex-col items-center justify-center w-screen text-[#eeeeee]'>
 
                 {participant.solo ? (
                     <div className='flex flex-col h-screen w-screen items-center md:items-start justify-center '>
