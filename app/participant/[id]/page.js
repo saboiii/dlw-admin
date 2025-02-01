@@ -114,13 +114,13 @@ function ParticipantPage() {
             <div className='flex flex-col items-center justify-center w-screen bg-black text-[#eeeeee]'>
 
                 {participant.solo ? (
-                    <div className='flex flex-col h-screen w-screen items-center md:items-start justify-center mt-12'>
-                        <div className='flex w-full items-end justify-between md:justify-start gap-4 px-12 md:px-24 mb-8'>
-                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] h-8 pl-2 pr-4 py-2'>
+                    <div className='flex flex-col h-screen w-screen items-center md:items-start justify-center '>
+                        <div className='flex w-full items-end justify-between md:justify-start gap-4 px-12 mb-8'>
+                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] h-8 pl-2 pr-4 py-2 hover:bg-[#222226] hover:text-slate-200 ease-in-out transition duration-200'>
                                 <IoChevronBack className='inline mr-2' />
                                 Back
                             </button>
-                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase h-8 text-[#535357] px-4 py-2'>
+                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase h-8 text-[#535357] px-4 py-2 hover:bg-[#222226] hover:text-slate-200 ease-in-out transition duration-200'>
                                 <FiDownload className='inline ' />
                             </button>
                         </div>
@@ -130,11 +130,11 @@ function ParticipantPage() {
                     <div className='flex flex-col pt-32 w-screen items-center md:items-start md:h-screen md:overflow-scroll'>
                         <h1 className='font-medium mb-8 md:px-12'>{participant.teamName}</h1>
                         <div className='w-full flex justify-between md:justify-start gap-4 mb-6 px-12 '>
-                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] pl-2 pr-4 py-2'>
+                            <button onClick={handleGoBack} className='rounded-md flex items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] pl-2 pr-4 py-2 hover:bg-[#222226] hover:text-slate-200 ease-in-out transition duration-200'>
                                 <IoChevronBack className='inline mr-2' />
                                 Back
                             </button>
-                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] px-4 py-2'>
+                            <button onClick={downloadExcel} className='rounded-md flex justify-center items-center bg-[#151518] border border-[#1f1f21] font-medium uppercase text-[#535357] px-4 py-2 hover:bg-[#222226] hover:text-slate-200 ease-in-out transition duration-200'>
                                 Download
                                 <FiDownload className='inline ml-2' />
                             </button>

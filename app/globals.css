@@ -9,7 +9,7 @@
 
 @layer base{
   body{
-    @apply text-[#111111] bg-[#eeeeee]  text-xs font-light
+    @apply bg-[#0e0e10] text-[#eeeeee]  text-xs font-light
   }
 
   h1 {
@@ -22,7 +22,7 @@
 }
 
 .title{
-  @apply text-[#111111] text-[42px] md:text-[64px] font-bold tracking-[-3px] leading-[40px]
+  @apply text-[#eeeeee] text-[42px] md:text-[64px] font-bold tracking-[-3px] leading-[40px]
 }
 
 .containerFormat {
@@ -46,7 +46,7 @@
 }
 
 .buttonDesign{
-  @apply bg-[#151518] text-[#eeeeee] hover:bg-[#111114] shadow-md shadow-[#281d1d] border border-[#1f1f21] rounded-3xl py-2 px-4 duration-300 ease-in-out
+  @apply bg-[#151518] text-[#eeeeee] hover:bg-[#111114] border border-[#1f1f21] rounded-lg uppercase font-medium py-2 px-4 duration-300 ease-in-out
 }
 
 .buttonDesign2{
