@@ -11,6 +11,7 @@ function ParticipantInfo({ participant }) {
         "Singapore University of Social Sciences": "SUSS",
         "Singapore Management University": "SMU",
         "Singapore Institute of Technology": "SIT",
+        "Singapore Institute of Management": "SIM",
     };
 
 
