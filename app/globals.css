@@ -53,6 +53,10 @@
   @apply bg-[#1f1f23] text-[#eeeeee] hover:bg-[#1d1d21] border border-[#28282c] disabled:text-[#676767] disabled:bg-[#262627] rounded-xl py-2 px-4 duration-300 ease-in-out
 }
 
+.inputDesign{
+  @apply bg-[#111114] text-[#eeeeee] hover:bg-[#0e0e10] border border-[#222227] disabled:text-[#676767] disabled:bg-[#262627] rounded-xl py-2 px-4 duration-300 ease-in-out
+}
+
 .deleteButton{
   @apply bg-[#b94f4f] font-normal text-[#eeeeee] disabled:text-[#6e6262] disabled:bg-[#c5baba] hover:bg-[#b45050]  rounded-lg py-2 px-8 duration-300 ease-in-out
 }

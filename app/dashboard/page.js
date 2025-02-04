@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useUser } from "@clerk/nextjs";
 import { Protect } from '@clerk/nextjs'
 import { LuRefreshCcw } from "react-icons/lu";
@@ -10,7 +10,6 @@ import { FiDownload } from "react-icons/fi";
 import * as XLSX from 'xlsx';
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
-import { useSpring, animated } from "@react-spring/web";
 
 
 ChartJS.register(
@@ -41,6 +40,7 @@ function Dashboard() {
     const [participantNameToDelete, setNameParticipantToDelete] = useState('');
     const [alert, setAlert] = useState(false);
     const [successDeleteMessage, setSuccessDeleteMessage] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const genderMap = {
         "he": "Male",
@@ -159,6 +159,34 @@ function Dashboard() {
         fetchData();
     }, []);
 
+    const filteredData = data.filter((participant) => {
+        const searchLower = searchQuery.toLowerCase();
+
+        if (participant.teamName && participant.teamName.toLowerCase().includes(searchLower)) {
+            return true;
+        }
+
+        if (participant.solo) {
+            return (
+                participant.solo.name.toLowerCase().includes(searchLower) ||
+                participant.solo.email.toLowerCase().includes(searchLower) ||
+                participant.solo.tele.toLowerCase().includes(searchLower) ||
+                universityMap[participant.solo.uni]?.toLowerCase().includes(searchLower)
+            );
+        }
+
+        if (participant.members) {
+            return participant.members.some((member) =>
+                member.name.toLowerCase().includes(searchLower) ||
+                member.email.toLowerCase().includes(searchLower) ||
+                member.tele.toLowerCase().includes(searchLower) ||
+                universityMap[member.uni]?.toLowerCase().includes(searchLower)
+            );
+        }
+
+        return false;
+    });
+
 
     const ShimmerPlaceholder = () => (
         <div className="animate-pulse w-full">
@@ -168,26 +196,8 @@ function Dashboard() {
         </div>
     );
 
-    const AnimatedNumber = ({ value }) => {
-        const [animatedValue, setAnimatedValue] = useState(0);
-    
-        const { number } = useSpring({
-            number: animatedValue,
-            from: { number: 0 },
-            config: { tension: 60, friction: 20, mass: 2 },
-        });
-    
-        useEffect(() => {
-            setAnimatedValue(value);
-        }, [value]);
-    
-        return (
-            <animated.h1 className='flex font-semibold w-full items-center justify-center text-center text-[42px] lg:text-[72px]'>
-                {number.to(n => Math.floor(n))}
-            </animated.h1>
-        );
-    };
-    
+
+
 
 
 
@@ -265,6 +275,14 @@ function Dashboard() {
                     <div className='grid lg:h-[75%] grid-cols-1 lg:grid-cols-6 lg:grid-rows-6 gap-8 lg:gap-4 w-full'>
                         <div className='flex flex-col w-full lg:col-span-3 lg:row-span-5 lg:h-full h-[60vh] containerFormat p-4'>
                             <div className='flex text-[#c1c2c7] text-lg ml-2 py-2 font-medium uppercase tracking-tight mb-4'>List of Participants</div>
+                            <input
+                                type="text"
+                                placeholder="Search participants"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className={`flex items-center mb-4 uppercase inputDesign outline-none ${isRefreshing ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
+                            />
                             <button
                                 onClick={fetchData}
                                 disabled={isRefreshing}
@@ -288,7 +306,7 @@ function Dashboard() {
                                 {isLoading ? (
                                     <ShimmerPlaceholder />
                                 ) : (
-                                    data.map((participant) => (
+                                    filteredData.map((participant) => (
                                         <div key={participant._id}>
                                             {participant.solo ? (
                                                 <div className="flex items-center justify-between px-6 my-2 w-full h-10">
@@ -345,15 +363,23 @@ function Dashboard() {
                                     <div className='flex h-full justify-between w-full '>
                                         <div className="flex flex-col items-center w-full justify-center">
                                             <div className='flex w-full items-center justify-center text-center text-[#c1c2c7] text-xs font-medium uppercase tracking-tight mb-6'>PARTICIPANTS</div>
-                                            <AnimatedNumber value={stats.totalParticipants} />
+                                            <h1 className='flex font-semibold w-full items-center justify-center text-center text-[42px] lg:text-[72px]'>
+                                                {stats.totalParticipants}
+                                            </h1>
                                         </div>
                                         <div className="flex flex-col items-center w-full justify-center">
                                             <div className='flex w-full items-center justify-center text-center text-[#c1c2c7] text-xs font-medium uppercase tracking-tight mb-6'>TEAMS</div>
-                                            <AnimatedNumber value={stats.numberOfTeams} />
+                                            <h1 className='flex font-semibold w-full items-center justify-center text-center text-[42px] lg:text-[72px]'>
+                                                {stats.numberOfTeams}
+                                            </h1>
+
                                         </div>
                                         <div className="flex flex-col items-center w-full justify-center">
                                             <div className='flex w-full items-center justify-center text-center text-[#c1c2c7] text-xs font-medium uppercase tracking-tight mb-6'>INDIVIDUALS</div>
-                                            <AnimatedNumber value={stats.numberOfSoloMembers} />
+                                            <h1 className='flex font-semibold w-full items-center justify-center text-center text-[42px] lg:text-[72px]'>
+                                                {stats.numberOfSoloMembers}
+                                            </h1>
+
                                         </div>
 
                                     </div>
