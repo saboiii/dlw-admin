@@ -128,10 +128,10 @@ function Navbar() {
                             onlineUsers
                                 .filter((onlineUser) => user && onlineUser.userId !== user.id)
                                 .map((onlineUser, index) => (
-                                    <div key={index} className='relative flex group items-center mr-6'>
+                                    <div key={index} className='relative flex group items-center' style={{ transform: `translateX(${5 * (-index + 1)}px)` }}>
                                         <div
                                             className={`z-[${index + 1}] overflow-hidden rounded-full h-[28px] w-[28px] flex`}
-                                            style={{ transform: `translateX(${28 * (-index + 1)}px)` }}
+                                            
                                         >
 
                                             <img
@@ -143,7 +143,7 @@ function Navbar() {
                                             />
 
                                         </div>
-                                        <div className='absolute flex-row items-center pointer-events-none flex opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out top-10 -left-[34px] cursor-pointer z-20 px-5 py-2 rounded-xl bg-[#151518] border border-[#1f1f21]' style={{ transform: `translateX(${28 * (-index + 1)}px)` }}>
+                                        <div className='absolute flex-row items-center pointer-events-none flex opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out top-10 -left-[36px] cursor-pointer z-20 px-5 py-2 rounded-xl bg-[#151518] border border-[#1f1f21]'>
                                             <div className='flex bg-green-400 w-1 h-1 rounded-full mr-3' />
                                             {onlineUser.firstName}
                                         </div>
