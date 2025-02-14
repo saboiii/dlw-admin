@@ -4,7 +4,6 @@ import { useUser, Protect } from "@clerk/nextjs";
 import { LuRefreshCcw } from "react-icons/lu";
 import Alert from '@/components/Alert';
 import Message from '@/components/Message';
-import { useRouter } from 'next/navigation';
 import { FiDownload, FiTrash2 } from "react-icons/fi";
 import * as XLSX from 'xlsx';
 import { Bar, Pie } from "react-chartjs-2";
@@ -22,7 +21,6 @@ ChartJS.register(
 );
 
 function Dashboard() {
-    const router = useRouter();
     const { isLoaded, user } = useUser();
     const [data, setData] = useState([]);
     const [stats, setStats] = useState({
@@ -40,10 +38,6 @@ function Dashboard() {
     const [alert, setAlert] = useState(false);
     const [successDeleteMessage, setSuccessDeleteMessage] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-
-    const isAdmin = isLoaded && user?.organizationMemberships?.some(
-        (membership) => membership.role === "admin"
-    );
 
     const genderMap = {
         "he": "Male",
@@ -76,7 +70,7 @@ function Dashboard() {
     }
 
     function handleView(id) {
-        router.push(`/participant/${id}`);
+        window.open(`/participant/${id}`, "_blank");
     }
 
     const handleDelete = async (id) => {
