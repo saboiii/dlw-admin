@@ -1,12 +1,11 @@
 'use client'
-import React, { useEffect, useState, useRef } from 'react'
-import { useUser } from "@clerk/nextjs";
-import { Protect } from '@clerk/nextjs'
+import React, { useEffect, useState } from 'react'
+import { useUser, Protect } from "@clerk/nextjs";
 import { LuRefreshCcw } from "react-icons/lu";
 import Alert from '@/components/Alert';
 import Message from '@/components/Message';
 import { useRouter } from 'next/navigation';
-import { FiDownload } from "react-icons/fi";
+import { FiDownload, FiTrash2 } from "react-icons/fi";
 import * as XLSX from 'xlsx';
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
@@ -41,6 +40,10 @@ function Dashboard() {
     const [alert, setAlert] = useState(false);
     const [successDeleteMessage, setSuccessDeleteMessage] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+
+    const isAdmin = isLoaded && user?.organizationMemberships?.some(
+        (membership) => membership.role === "admin"
+    );
 
     const genderMap = {
         "he": "Male",
@@ -312,7 +315,7 @@ function Dashboard() {
                                                 <div className="flex items-center justify-between px-6 my-2 w-full h-10">
                                                     <div className='flex gap-4'>
                                                         <div className="flex soloStyle">Solo</div>
-                                                        <div className="block soloStyleSoft w-[25vw] lg:w-[150px] lg:w-[200px] truncate">{participant.solo.name}</div>
+                                                        <div className="block soloStyleSoft w-[60px] lg:w-[200px] truncate">{participant.solo.name}</div>
                                                     </div>
                                                     <div className='flex gap-2'>
                                                         <button
@@ -320,11 +323,16 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        {/* <button
-                                                            onClick={() => startDelete(participant._id, participant.solo.name)}
-                                                            className='flex deleteButton2'>
-                                                            Delete
-                                                        </button> */}
+                                                        <Protect
+                                                            condition={(has) => has({ role: 'org:admin' })}
+                                                        >
+                                                            <button
+                                                                onClick={() => startDelete(participant._id, participant.solo.name)}
+                                                                className='flex deleteButton2 items-center justify-center'>
+                                                                <FiTrash2 size={10} className='flex'/>
+                                                            </button>
+
+                                                        </Protect>
                                                     </div>
                                                 </div>
                                             ) : (
@@ -341,11 +349,16 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        {/* <button
-                                                            onClick={() => startDelete(participant._id, participant.teamName)}
-                                                            className='flex deleteButton2'>
-                                                            Delete
-                                                        </button> */}
+                                                        <Protect
+                                                            condition={(has) => has({ role: 'org:admin' })}
+                                                        >
+                                                            <button
+                                                                onClick={() => startDelete(participant._id, participant.solo.name)}
+                                                                className='flex deleteButton2 items-center justify-center'>
+                                                                <FiTrash2 size={10} className='flex'/>
+                                                            </button>
+
+                                                        </Protect>
                                                     </div>
                                                 </div>
                                             )}

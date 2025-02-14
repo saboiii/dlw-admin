@@ -62,7 +62,7 @@
 }
 
 .deleteButton2{
-  @apply bg-[#974040] uppercase font-medium text-[#d9aeae] disabled:text-[#6e6262] disabled:bg-[#c5baba] hover:bg-[#994343]  rounded-lg py-1 px-3 duration-300 ease-in-out text-[9px]
+  @apply bg-[#a74242] uppercase font-medium text-[#f8dede] disabled:text-[#6e6262] disabled:bg-[#c5baba] hover:bg-[#994343]  rounded-lg py-1 px-2 duration-300 ease-in-out text-[9px]
 }
 
 .viewButton{
