@@ -321,7 +321,7 @@ function Dashboard() {
                                                             condition={(has) => has({ role: 'org:admin' })}
                                                         >
                                                             <button
-                                                                onClick={() => startDelete(participant._id, participant.solo.name)}
+                                                                onClick={() => startDelete(participant._id, participant.teamName)}
                                                                 className='flex deleteButton2 items-center justify-center'>
                                                                 <FiTrash2 size={10} className='flex'/>
                                                             </button>
