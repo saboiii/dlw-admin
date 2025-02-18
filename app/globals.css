@@ -46,7 +46,7 @@
 }
 
 .buttonDesign{
-  @apply bg-[#151518] text-[#eeeeee] hover:bg-[#111114] border border-[#1f1f21] rounded-lg uppercase font-medium py-2 px-4 duration-300 ease-in-out
+  @apply bg-[#17171b] text-[#eeeeee] hover:bg-[#111114]/70 border border-[#2b2b2e] rounded-lg uppercase font-medium py-3 pl-4 pr-3 duration-300 ease-in-out text-xs
 }
 
 .buttonDesign2{
