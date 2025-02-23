@@ -24,6 +24,7 @@ export default function Home() {
         quality={100}
         width={400}
         alt="DLW Logo"
+        className="h-16 w-auto md:h-auto"
       />
         <Link href='/dashboard' className="buttonDesign mt-6 items-center justify-center flex flex-row">
         <div>DASHBOARD</div>
