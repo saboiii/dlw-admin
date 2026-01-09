@@ -86,9 +86,15 @@ function Navbar() {
                             onlineUsers
                                 .filter((onlineUser) => user && onlineUser.userId !== user.id)
                                 .map((onlineUser, index) => (
-                                    <div key={index} className='relative mb-4 flex items-center group' style={{ transform: `translateY(${-20 * (index-1)}px)` }}>
-
-                                        <div className={`z-[${index + 1}] shadow-lg shadow-black overflow-hidden rounded-full h-[27px] w-[27px] flex`}>
+                                    <div
+                                        key={index}
+                                        className='relative flex items-center group'
+                                        style={{ marginTop: index === 0 ? 0 : -6 }}
+                                    >
+                                        <div
+                                            className='shadow-lg shadow-black overflow-hidden rounded-full h-[27px] w-[27px] flex'
+                                            style={{ zIndex: index + 1 }}
+                                        >
                                             <img
                                                 src={onlineUser.imageUrl}
                                                 height={40}
@@ -101,7 +107,6 @@ function Navbar() {
                                             <div className='flex bg-green-400 w-1 h-1 rounded-full mr-3' />
                                             {onlineUser.firstName}
                                         </div>
-
                                     </div>
                                 ))}
 
@@ -123,25 +128,27 @@ function Navbar() {
                     />
                 </Link>
                 <div className='flex items-center justify-center divide-[#2d2d31] divide-x'>
-                    <div className='flex items-center'>
+                    <div className='flex flex-col items-center'>
                         {onlineUsers &&
                             onlineUsers
                                 .filter((onlineUser) => user && onlineUser.userId !== user.id)
                                 .map((onlineUser, index) => (
-                                    <div key={index} className='relative flex group items-center' style={{ transform: `translateX(${5 * (-index + 1)}px)` }}>
+                                    <div
+                                        key={index}
+                                        className='relative flex group items-center'
+                                        style={{ marginTop: index === 0 ? 0 : -20 }}
+                                    >
                                         <div
-                                            className={`z-[${index + 1}] overflow-hidden rounded-full h-[28px] w-[28px] flex`}
-                                            
+                                            className='overflow-hidden rounded-full h-[48px] w-[48px] flex'
+                                            style={{ zIndex: index + 1 }}
                                         >
-
-                                            <img
+                                            <Image
                                                 src={onlineUser.imageUrl}
-                                                height={40}
-                                                width={40}
+                                                height={50}
+                                                width={50}
                                                 alt={onlineUser.firstName || 'User'}
                                                 className='object-cover w-full h-full'
                                             />
-
                                         </div>
                                         <div className='absolute flex-row items-center pointer-events-none flex opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out top-10 -left-[36px] cursor-pointer z-20 px-5 py-2 rounded-xl bg-[#151518] border border-[#1f1f21]'>
                                             <div className='flex bg-green-400 w-1 h-1 rounded-full mr-3' />

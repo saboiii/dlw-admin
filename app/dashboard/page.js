@@ -22,6 +22,7 @@ ChartJS.register(
 
 function Dashboard() {
     const { isLoaded, user } = useUser();
+    const isAdmin = user?.publicMetadata?.user === 'admin';
     const [data, setData] = useState([]);
     const [stats, setStats] = useState({
         numberOfTeams: 0,
@@ -377,16 +378,13 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        <Protect
-                                                            condition={(has) => has({ role: 'org:admin' })}
-                                                        >
+                                                        {isAdmin && (
                                                             <button
                                                                 onClick={() => startDelete(participant._id, participant.solo.name)}
                                                                 className='flex deleteButton2 items-center justify-center'>
                                                                 <FiTrash2 size={10} className='flex'/>
                                                             </button>
-
-                                                        </Protect>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -403,16 +401,13 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        <Protect
-                                                            condition={(has) => has({ role: 'org:admin' })}
-                                                        >
+                                                        {isAdmin && (
                                                             <button
                                                                 onClick={() => startDelete(participant._id, participant.teamName)}
                                                                 className='flex deleteButton2 items-center justify-center'>
                                                                 <FiTrash2 size={10} className='flex'/>
                                                             </button>
-
-                                                        </Protect>
+                                                        )}
                                                     </div>
                                                 </div>
                                             )}
