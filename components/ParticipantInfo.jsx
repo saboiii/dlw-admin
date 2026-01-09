@@ -22,6 +22,18 @@ function ParticipantInfo({ participant }) {
         "they": "Prefer not to say",
     };
 
+    const degreeTypeMap = {
+        "ug": "Undergraduate",
+        "mas": "Postgraduate (Masters)",
+        "phd": "Postgraduate (PhD)",
+    };
+
+    const nationalityMap = {
+        "sg": "Singaporean Citizen",
+        "pr": "Singapore PR",
+        "int": "International",
+    };
+
     return (
         <div className='flex flex-col justify-center w-full gap-4 px-12 '>
             <h2 className='flex mb-4 font-normal'>{participant.name}</h2>
@@ -46,6 +58,26 @@ function ParticipantInfo({ participant }) {
             <CopyField content={participant.tele} title={'Telegram Handle'} />
 
             <CopyField content={participant.course} title={'Course'}/>
+
+            {participant.school && (
+                <CopyField content={participant.school} title={'School'} />
+            )}
+
+            {participant.degreeType && (
+                <CopyField content={degreeTypeMap[participant.degreeType] || participant.degreeType} title={'Degree Type'} />
+            )}
+
+            {participant.year && (
+                <CopyField content={participant.year} title={'Year'} />
+            )}
+
+            {participant.nationality && (
+                <CopyField content={nationalityMap[participant.nationality] || participant.nationality} title={'Nationality'} />
+            )}
+
+            {participant.diet && (
+                <CopyField content={participant.diet} title={'Dietary Preferences'} />
+            )}
         </div>
     )
 }

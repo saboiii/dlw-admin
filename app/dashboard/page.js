@@ -28,7 +28,11 @@ function Dashboard() {
         numberOfSoloMembers: 0,
         totalParticipants: 0,
         studentsByUniversity: {},
-        genderCounts: {}
+        genderCounts: {},
+        schoolCounts: {},
+        degreeTypeCounts: {},
+        yearCounts: {},
+        nationalityCounts: {}
     });
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -142,7 +146,63 @@ function Dashboard() {
                     return acc;
                 }, {});
 
-                setStats({ numberOfTeams, numberOfSoloMembers, totalParticipants, studentsByUniversity, genderCounts });
+                const schoolCounts = participants.reduce((acc, p) => {
+                    if (p.solo && p.solo.school) {
+                        acc[p.solo.school] = (acc[p.solo.school] || 0) + 1;
+                    }
+                    if (p.members) {
+                        p.members.forEach(member => {
+                            if (member.school) {
+                                acc[member.school] = (acc[member.school] || 0) + 1;
+                            }
+                        });
+                    }
+                    return acc;
+                }, {});
+
+                const degreeTypeCounts = participants.reduce((acc, p) => {
+                    if (p.solo && p.solo.degreeType) {
+                        acc[p.solo.degreeType] = (acc[p.solo.degreeType] || 0) + 1;
+                    }
+                    if (p.members) {
+                        p.members.forEach(member => {
+                            if (member.degreeType) {
+                                acc[member.degreeType] = (acc[member.degreeType] || 0) + 1;
+                            }
+                        });
+                    }
+                    return acc;
+                }, {});
+
+                const yearCounts = participants.reduce((acc, p) => {
+                    if (p.solo && p.solo.year) {
+                        acc[p.solo.year] = (acc[p.solo.year] || 0) + 1;
+                    }
+                    if (p.members) {
+                        p.members.forEach(member => {
+                            if (member.year) {
+                                acc[member.year] = (acc[member.year] || 0) + 1;
+                            }
+                        });
+                    }
+                    return acc;
+                }, {});
+
+                const nationalityCounts = participants.reduce((acc, p) => {
+                    if (p.solo && p.solo.nationality) {
+                        acc[p.solo.nationality] = (acc[p.solo.nationality] || 0) + 1;
+                    }
+                    if (p.members) {
+                        p.members.forEach(member => {
+                            if (member.nationality) {
+                                acc[member.nationality] = (acc[member.nationality] || 0) + 1;
+                            }
+                        });
+                    }
+                    return acc;
+                }, {});
+
+                setStats({ numberOfTeams, numberOfSoloMembers, totalParticipants, studentsByUniversity, genderCounts, schoolCounts, degreeTypeCounts, yearCounts, nationalityCounts });
             })
             .catch((error) => console.error('Error fetching participants:', error))
             .finally(() => {
