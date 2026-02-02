@@ -18,10 +18,10 @@ export async function DELETE(req) {
       );
     }
 
-    const role = user.publicMetadata?.user;
-    if (role !== 'admin') {
+    const role = user.publicMetadata?.role;
+    if (role !== 'exco') {
       return new Response(
-        JSON.stringify({ message: 'Forbidden: Admins only' }),
+        JSON.stringify({ message: 'Forbidden: Exco members only' }),
         {
           status: 403,
           headers: { 'Content-Type': 'application/json' },

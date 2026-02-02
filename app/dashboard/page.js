@@ -22,7 +22,7 @@ ChartJS.register(
 
 function Dashboard() {
     const { isLoaded, user } = useUser();
-    const isAdmin = user?.publicMetadata?.user === 'admin';
+    const isExco = user?.publicMetadata?.role === 'exco';
     const [data, setData] = useState([]);
     const [stats, setStats] = useState({
         numberOfTeams: 0,
@@ -378,7 +378,7 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        {isAdmin && (
+                                                        {isExco && (
                                                             <button
                                                                 onClick={() => startDelete(participant._id, participant.solo.name)}
                                                                 className='flex deleteButton2 items-center justify-center'>
@@ -401,7 +401,7 @@ function Dashboard() {
                                                             className='flex viewButton'>
                                                             View
                                                         </button>
-                                                        {isAdmin && (
+                                                        {isExco && (
                                                             <button
                                                                 onClick={() => startDelete(participant._id, participant.teamName)}
                                                                 className='flex deleteButton2 items-center justify-center'>
