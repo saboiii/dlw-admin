@@ -5,7 +5,7 @@ connectDB();
 
 export async function GET(req) {
   try {
-    const participants = await Participant.find({}).sort({ _id: 1 });
+    const participants = await Participant.find({}).sort({ createdAt: -1, _id: -1 });
     return new Response(JSON.stringify({ participants }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

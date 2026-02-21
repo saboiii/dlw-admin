@@ -23,6 +23,12 @@ function ParticipantPage() {
         "they": "Prefer not to say",
     };
 
+    const getGenderLabel = (gender) => {
+        if (typeof gender !== "string") return "";
+        const normalized = gender.trim().toLowerCase();
+        return genderMap[normalized] || gender;
+    };
+
     const universityMap = {
         "Nanyang Technological University": "NTU",
         "National University of Singapore": "NUS",
@@ -33,46 +39,80 @@ function ParticipantPage() {
         "Singapore Institute of Management": "SIM",
     };
 
+    const participantTypeMap = {
+        "uni": "University",
+        "preuni": "Pre-University",
+    };
+
     const downloadExcel = () => {
         if (!participant) return;
 
         let data = [];
 
+        const createdAt = participant.createdAt || "";
+        const updatedAt = participant.updatedAt || "";
+
         if (participant.solo) {
             data.push({
+                Team_Name: "Solo",
                 Name: participant.solo.name,
+                Participant_Type: participantTypeMap[participant.solo.participantType] || participant.solo.participantType || "University",
                 Email: participant.solo.email,
                 Telegram: participant.solo.tele,
-                University: universityMap[participant.solo.uni],
+                University: participant.solo.uni ? (universityMap[participant.solo.uni] || participant.solo.uni) : "",
+                Institution_Name: participant.solo.institutionName || "",
+                Pre_Uni_Category: participant.solo.preUniCategory || "",
+                Expected_Grad_Year: participant.solo.expectedGradYear || "",
+                Date_Of_Birth: participant.solo.dateOfBirth || "",
+                Guardian_Name: participant.solo.guardianName || "",
+                Guardian_Email: participant.solo.guardianEmail || "",
+                Guardian_Phone: participant.solo.guardianPhone || "",
+                Guardian_Consent: typeof participant.solo.guardianConsent === "boolean" ? (participant.solo.guardianConsent ? "Yes" : "No") : "",
+                Indemnity_MS_Form_Confirmed: typeof participant.solo.indemnityMsFormConfirmed === "boolean" ? (participant.solo.indemnityMsFormConfirmed ? "Yes" : "No") : "",
                 Course: participant.solo.course,
                 School: participant.solo.school || "",
                 Degree_Type: participant.solo.degreeType || "",
                 Year: participant.solo.year || "",
                 Nationality: participant.solo.nationality || "",
-                Gender: genderMap[participant.solo.gender],
+                Gender: getGenderLabel(participant.solo.gender),
                 Night_Stay: participant.solo.night ? "Yes" : "No",
                 Size: participant.solo.size,
                 NTU_Email: participant.solo.ntuEmail || "",
                 Matric_No: participant.solo.matricNo || "",
                 Dietary_Preferences: participant.solo.diet || "",
+                Created_At: createdAt,
+                Updated_At: updatedAt,
             });
         } else if (participant.members) {
             data = participant.members.map(member => ({
+                Team_Name: participant.teamName || "Team",
                 Name: member.name,
+                Participant_Type: participantTypeMap[member.participantType] || member.participantType || "University",
                 Email: member.email,
                 Telegram: member.tele,
-                University: universityMap[member.uni],
+                University: member.uni ? (universityMap[member.uni] || member.uni) : "",
+                Institution_Name: member.institutionName || "",
+                Pre_Uni_Category: member.preUniCategory || "",
+                Expected_Grad_Year: member.expectedGradYear || "",
+                Date_Of_Birth: member.dateOfBirth || "",
+                Guardian_Name: member.guardianName || "",
+                Guardian_Email: member.guardianEmail || "",
+                Guardian_Phone: member.guardianPhone || "",
+                Guardian_Consent: typeof member.guardianConsent === "boolean" ? (member.guardianConsent ? "Yes" : "No") : "",
+                Indemnity_MS_Form_Confirmed: typeof member.indemnityMsFormConfirmed === "boolean" ? (member.indemnityMsFormConfirmed ? "Yes" : "No") : "",
                 Course: member.course,
                 School: member.school || "",
                 Degree_Type: member.degreeType || "",
                 Year: member.year || "",
                 Nationality: member.nationality || "",
-                Gender: genderMap[member.gender],
+                Gender: getGenderLabel(member.gender),
                 Night_Stay: member.night ? "Yes" : "No",
                 Size: member.size,
                 NTU_Email: member.ntuEmail || "",
                 Matric_No: member.matricNo || "",
                 Dietary_Preferences: member.diet || "",
+                Created_At: createdAt,
+                Updated_At: updatedAt,
             }));
         }
 
