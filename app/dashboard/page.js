@@ -67,6 +67,48 @@ function Dashboard() {
         "preuni": "Pre-Uni",
     };
 
+    const degreeTypeMap = {
+        "ug": "Undergraduate",
+        "mas": "Postgraduate (Masters)",
+        "phd": "Postgraduate (PhD)",
+    };
+
+    const nationalityMap = {
+        "sg": "Singaporean Citizen",
+        "pr": "Singapore PR",
+        "int": "International",
+    };
+
+    const dietMap = {
+        "na": "No Preference",
+        "veg": "Vegetarian",
+        "halal": "Halal",
+    };
+
+    const preUniCategoryMap = {
+        "jc": "Junior College",
+        "poly": "Polytechnic",
+        "ite": "ITE",
+        "secondary": "Secondary",
+        "international": "International School",
+        "other": "Other",
+    };
+
+    const schoolMap = {
+        "COE": "College of Engineering (MAE, MSE, EEE, CEE)",
+        "CoS": "College of Science (CCEB, SPMS, SBS, ASE)",
+        "NBS": "Nanyang Business School",
+        "COHASS": "College of Humanities, Arts, and Social Sciences",
+        "CCDS": "College of Computing and Data Science",
+    };
+
+    const techSchools = new Set(["COE", "CoS", "CCDS"]);
+    const nonTechSchools = new Set(["NBS", "COHASS"]);
+
+    const techCourseRegex = /(computer\s*sci\w*|computing|software|data|analyt\w*|ai|artificial|machine\s*learning|ml|information|infocomm|infocom|informatics|cyber|security|cloud|iot|engineering|electrical|electronic|mechanical|mechatronic|aerospace|civil|chemical|materials|biomedical|bioengineer|bioinformatic|mathematics|statistic|physics|tech|technology|robotic|quantitative\s*finance)/i;
+    const techCourseAbbrevRegex = /\b(cs|csc|ce|dsai|eee|ict|it|iem|esd|csd|bie|bcg)\b/i;
+    const nonTechCourseRegex = /(business|accounting|finance|economics|marketing|management|humanities|history|linguistics|literature|psychology|sociology|political|public\s*policy|law|communications|journalism|design|arts|music|education|social\s*work|maritime\s*studies)/i;
+
     const preUniLabel = "Pre-Uni";
 
     const getRegistrationTime = (participant) => {
@@ -92,6 +134,62 @@ function Dashboard() {
         if (typeof gender !== "string") return "";
         const normalized = gender.trim().toLowerCase();
         return genderMap[normalized] || gender;
+    };
+
+    const normalizeParticipantType = (value) => {
+        if (!value) return "";
+        return participantTypeMap[value] || value;
+    };
+
+    const normalizeSchool = (value) => {
+        if (!value) return "";
+        return schoolMap[value] || value;
+    };
+
+    const normalizePreUniCategory = (value) => {
+        if (!value) return "";
+        return preUniCategoryMap[value] || value;
+    };
+
+    const normalizeDegreeType = (value) => {
+        if (!value) return "";
+        return degreeTypeMap[value] || value;
+    };
+
+    const normalizeNationality = (value) => {
+        if (!value) return "";
+        return nationalityMap[value] || value;
+    };
+
+    const normalizeDiet = (value) => {
+        if (!value) return "";
+        return dietMap[value] || value;
+    };
+
+    const getTechCategory = ({ school, course }) => {
+        if (school && techSchools.has(school)) return "Tech";
+        if (school && nonTechSchools.has(school)) return "Non-Tech";
+        if (course && techCourseAbbrevRegex.test(course)) return "Tech";
+        if (course && techCourseRegex.test(course)) return "Tech";
+        if (course && nonTechCourseRegex.test(course)) return "Non-Tech";
+        return "Unknown";
+    };
+
+    const formatTimestamp = (value, fallbackId) => {
+        if (value) {
+            const parsed = new Date(value);
+            if (!Number.isNaN(parsed.getTime())) {
+                return parsed.toISOString();
+            }
+        }
+        if (fallbackId) {
+            const hex = fallbackId.toString().substring(0, 8);
+            const timestamp = parseInt(hex, 16);
+            if (!Number.isNaN(timestamp)) {
+                return new Date(timestamp * 1000).toISOString();
+            }
+        }
+        return "";
     };
 
     function openAlert() {
@@ -332,77 +430,77 @@ function Dashboard() {
         if (!data || data.length === 0) return;
 
         const allParticipants = data.flatMap(participant => {
-            const createdAt = participant.createdAt || "";
-            const updatedAt = participant.updatedAt || "";
-            if (participant.solo) {
+            const createdAt = formatTimestamp(participant.createdAt, participant._id);
+            const updatedAt = formatTimestamp(participant.updatedAt, participant._id);
+
+            const buildRow = (member, teamNameLabel) => {
+                const techCategoryValue = getTechCategory({
+                    school: member.school || "",
+                    course: member.course || "",
+                });
+
                 return {
-                    Team_Name: "Solo",
-                    Name: participant.solo.name,
-                    Participant_Type: participantTypeMap[participant.solo.participantType] || participant.solo.participantType || "University",
-                    Email: participant.solo.email,
-                    Telegram: participant.solo.tele,
-                    University: participant.solo.uni ? (universityMap[participant.solo.uni] || participant.solo.uni) : "",
-                    Institution_Name: participant.solo.institutionName || "",
-                    Pre_Uni_Category: participant.solo.preUniCategory || "",
-                    Expected_Grad_Year: participant.solo.expectedGradYear || "",
-                    Date_Of_Birth: participant.solo.dateOfBirth || "",
-                    Guardian_Name: participant.solo.guardianName || "",
-                    Guardian_Email: participant.solo.guardianEmail || "",
-                    Guardian_Phone: participant.solo.guardianPhone || "",
-                    Guardian_Consent: typeof participant.solo.guardianConsent === "boolean" ? (participant.solo.guardianConsent ? "Yes" : "No") : "",
-                    Indemnity_MS_Form_Confirmed: typeof participant.solo.indemnityMsFormConfirmed === "boolean" ? (participant.solo.indemnityMsFormConfirmed ? "Yes" : "No") : "",
-                    Course: participant.solo.course,
-                    School: participant.solo.school || "",
-                    Degree_Type: participant.solo.degreeType || "",
-                    Year: participant.solo.year || "",
-                    Nationality: participant.solo.nationality || "",
-                    Gender: getGenderLabel(participant.solo.gender),
-                    Night_Stay: participant.solo.night ? "Yes" : "No",
-                    Size: participant.solo.size,
-                    NTU_Email: participant.solo.ntuEmail || "",
-                    Matric_No: participant.solo.matricNo || "",
-                    Dietary_Preferences: participant.solo.diet || "",
-                    Created_At: createdAt,
-                    Updated_At: updatedAt,
+                    "Team Name": teamNameLabel,
+                    "Participant Name": member.name,
+                    "Participant Type": normalizeParticipantType(member.participantType || "uni"),
+                    "Tech vs Non-Tech": techCategoryValue,
+                    "Email": member.email,
+                    "Telegram Handle": member.tele,
+                    "University": member.uni ? (universityMap[member.uni] || member.uni) : "",
+                    "Institution Name": member.institutionName || "",
+                    "Pre-University Category": normalizePreUniCategory(member.preUniCategory || ""),
+                    "Expected Graduation Year": member.expectedGradYear || "",
+                    "Date of Birth": member.dateOfBirth || "",
+                    "Guardian Name": member.guardianName || "",
+                    "Guardian Email": member.guardianEmail || "",
+                    "Guardian Phone": member.guardianPhone || "",
+                    "Guardian Consent": typeof member.guardianConsent === "boolean" ? (member.guardianConsent ? "Yes" : "No") : "",
+                    "Indemnity MS Form Confirmed": typeof member.indemnityMsFormConfirmed === "boolean" ? (member.indemnityMsFormConfirmed ? "Yes" : "No") : "",
+                    "Course / Stream / Track": member.course || "",
+                    "School": normalizeSchool(member.school || ""),
+                    "Degree Type": normalizeDegreeType(member.degreeType || ""),
+                    "Year": member.year || "",
+                    "Nationality / Residential Status": normalizeNationality(member.nationality || ""),
+                    "Gender": getGenderLabel(member.gender),
+                    "Staying Overnight": member.night ? "Yes" : "No",
+                    "T-Shirt Size": member.size || "",
+                    "NTU Email": member.ntuEmail || "",
+                    "Matriculation Number": member.matricNo || "",
+                    "Dietary Preferences": normalizeDiet(member.diet || ""),
+                    "Submitted At": createdAt,
+                    "Last Updated At": updatedAt,
                 };
-            } else if (participant.members) {
-                return participant.members.map(member => ({
-                    Team_Name: participant.teamName || "Team",
-                    Name: member.name,
-                    Participant_Type: participantTypeMap[member.participantType] || member.participantType || "University",
-                    Email: member.email,
-                    Telegram: member.tele,
-                    University: member.uni ? (universityMap[member.uni] || member.uni) : "",
-                    Institution_Name: member.institutionName || "",
-                    Pre_Uni_Category: member.preUniCategory || "",
-                    Expected_Grad_Year: member.expectedGradYear || "",
-                    Date_Of_Birth: member.dateOfBirth || "",
-                    Guardian_Name: member.guardianName || "",
-                    Guardian_Email: member.guardianEmail || "",
-                    Guardian_Phone: member.guardianPhone || "",
-                    Guardian_Consent: typeof member.guardianConsent === "boolean" ? (member.guardianConsent ? "Yes" : "No") : "",
-                    Indemnity_MS_Form_Confirmed: typeof member.indemnityMsFormConfirmed === "boolean" ? (member.indemnityMsFormConfirmed ? "Yes" : "No") : "",
-                    Course: member.course,
-                    School: member.school || "",
-                    Degree_Type: member.degreeType || "",
-                    Year: member.year || "",
-                    Nationality: member.nationality || "",
-                    Gender: getGenderLabel(member.gender),
-                    Night_Stay: member.night ? "Yes" : "No",
-                    Size: member.size,
-                    NTU_Email: member.ntuEmail || "",
-                    Matric_No: member.matricNo || "",
-                    Dietary_Preferences: member.diet || "",
-                    Created_At: createdAt,
-                    Updated_At: updatedAt,
-                }));
+            };
+
+            if (participant.solo) {
+                return buildRow(participant.solo, "Individual");
+            }
+            if (participant.members) {
+                return participant.members.map(member =>
+                    buildRow(member, participant.teamName || "Team")
+                );
             }
             return [];
         });
 
+        const techCounts = { "Tech": 0, "Non-Tech": 0, "Unknown": 0 };
+        allParticipants.forEach((row) => {
+            const category = row["Tech vs Non-Tech"] || "Unknown";
+            techCounts[category] = (techCounts[category] || 0) + 1;
+        });
+
+        const summaryRows = [
+            { "Category": "Tech", "Count": techCounts["Tech"] || 0 },
+            { "Category": "Non-Tech", "Count": techCounts["Non-Tech"] || 0 },
+            { "Category": "Unknown", "Count": techCounts["Unknown"] || 0 },
+            { "Category": "Total", "Count": allParticipants.length },
+        ];
+
         const worksheet = XLSX.utils.json_to_sheet(allParticipants);
+        const summarySheet = XLSX.utils.json_to_sheet(summaryRows);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
+        XLSX.utils.book_append_sheet(workbook, summarySheet, "Summary");
 
         const rawFileName = "dlw_participants";
         const formattedFileName = rawFileName.toLowerCase().replace(/\s+/g, "-");
